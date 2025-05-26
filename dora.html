@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Audiora - Mood Player</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #211130, #8d8c8c);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    h1 { margin-bottom: 20px; }
+    select, button {
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 10px;
+    }
+    .player {
+      margin-top: 30px;
+      width: 100%;
+      max-width: 560px;
+      aspect-ratio: 16/9;
+    }
+    .header-image {
+      width: 160%;
+      max-width: 160px;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Image section -->
+  <img src="logo.png" alt="Audiora Image" class="header-image">
+
+  <h1>🎧 Audiora - A Music that listens to uh</h1>
+
+  <label for="mood">hey listener what is your mood today😉:</label>
+  <select id="mood">
+    <option value="">--Choose your mood buddy🙂‍↔--</option>
+    <option value="happy">Happy</option>
+    <option value="sad">Sad</option>
+    <option value="angry">Angry</option>
+    <option value="chill">Chill</option>
+    <option value="study">Study</option>
+    <option value="excited">Excited</option>
+    <option value="spiritual">Spiritual</option>
+  </select>
+
+  <button onclick="suggestSongs()">Get Songs</button>
+
+  <div id="songs" style="margin-top: 20px;"></div>
+
+  <div class="player" id="playerContainer"></div>
+
+<script>
+  const moodToSongs = {
+    happy: [
+      { title: "Happy - Pharrell Williams", videoId: "ZbZSe6N_BXs" },
+      { title: "Can't Stop The Feeling - Justin Timberlake", videoId: "ru0K8uYEZWw" },
+      { title: "Hai Apna Dil to Awara", videoId: "L0QWJqAHEsg" },
+      { title: "Shake It Off", videoId: "nfWlot6h_JM" },
+      { title: "Aaj Main Upar", videoId: "cBhehE8AbUA" },
+      { title: "Patakha Guddi", videoId: "Hu6hvzyS_ZY" },
+      { title: "Gulaabi Aankhein", videoId: "6Z3DO-OFIjQ" }
+    ],
+    sad: [
+      { title: "Someone Like You - Adele", videoId: "hLQl3WQQoQ0" },
+      { title: "Fix You - Coldplay", videoId: "k4V3Mo61fJM" },
+      { title: "Channa Mereya", videoId: "284Ov7ysmfA" },
+      { title: "Kabira", videoId: "jHNNMj5bNQw" },
+      { title: "Bulleya", videoId: "a9Hxkc9YxGE" },
+      { title: "Tay Hai", videoId: "HzkJ7sYh39g" },
+      { title: "Piya Aye Naa", videoId: "bXNhPOMgavI" },
+      { title: "Iktara", videoId: "fTtPg6CSeHk" },
+      { title: "Jiya Laage Naa", videoId: "hi53NNW7qDw" }
+     
+    ],
+    angry: [
+      { title: "Break Stuff - Limp Bizkit", videoId: "ZpUYjpKg9KY" },
+      { title: "Killing in the Name - Rage Against The Machine", videoId: "bWXazVhlyxQ" },
+      { title: "Zinda", videoId: "fP6MNznzVcQ" },
+      { title: "Khoon Chala", videoId: "OAV1RbsGs" },
+      { title: "Azadi", videoId: "4nCshJBODT4" },
+      { title: "Kabir Singh Theme Music", videoId: "KoCmgymSSOk" }
+    ],
+    chill: [
+      { title: "Weightless - Marconi Union", videoId: "UfcAVejslrU" },
+      { title: "Ye Shaam Mastani", videoId: "os7sP2QB1RA" },
+      { title: "Just Chill", videoId: "n6vsq_F42vY" },
+      { title: "Pyaar Hume Kis Mod Pe Le Aaya", videoId: "Xl5fbz4BzFg" },
+      { title: "Zindagi Ek Safar Hai Suhana", videoId: "VTPEfY62LDg" },
+      { title: "Matargashti", videoId: "6vKucgAeF_Q" },
+      { title: "Meri Umar Ke Naujawanon", videoId: "0XFousufn88" }
+    ],
+    excited: [
+      { title: "Don't Stop Me Now - Queen", videoId: "HgzGwKwLmgM" },
+      { title: "Uptown Funk - Bruno Mars", videoId: "OPf0YbXqDm0" },
+      { title: "Not Ramaiya Vastavaiya", videoId: "m3OtL4peEWU" },
+      { title: "Naatu Naatu", videoId: "OsU0CGZoV8E" },
+      { title: "Badtamiz Dil", videoId: "II2EO3Nw4m0" },
+      { title: "Genda Phool", videoId: "SD4Z8dlZPd8" },
+      { title: "Nagoba Dulaya Lagla", videoId: "IeCmXmRRKDk" },
+      { title: "Kashmir Main Tu Kanyakumari", videoId: "dodDteh-m3Q" }
+    ],
+    study: [
+      { title: "Lofi Hip Hop Radio ", videoId: "5qap5aO4i9A" },
+      { title: "Ambient Study Music to Concentrate", videoId: "sjkrrmBnpGE" },
+      { title: "Deep Focus – Music for Studying", videoId: "SjiSEvh6fJs" },
+      { title: "Sunset Lover", videoId: "4DZp1bm4V70" },
+      { title: "Give Me Some Sunshine", videoId: "lbCRtrrMvSw" }
+    ],
+    spiritual: [
+      { title: "Hanuman Chalisa ", videoId: "LvxnYiKj0e0" },
+      { title: "Om Jai Lakshmi Mata Aarti", videoId: "l_fsRd5Hb6k" },
+      { title: "Jai Shiv Shankar", videoId: "pnoVeh2hcVA" },
+      { title: "Jai Ganesh Deva", videoId: "ZajcqEGYiaA" },
+      { title: "Gan Ganpathey", videoId: "L75NLArAdPU" },
+      { title: "Om Jay Jagdish Hare", videoId: "sd31yGqZFlA" },
+      { title: "Aarti Kije Hanuman Lala Ki", videoId: "fGREucinH1Y" },
+      { title: "Aarti Kunj Bihari Ki", videoId: "EELx3csZDdQ" },
+      { title: "Sampurna Aarti Sangrah", videoId: "OqGbYVHcxUY" },
+       
+    ]
+  };
+
+  function suggestSongs() {
+    const mood = document.getElementById("mood").value;
+    const songContainer = document.getElementById("songs");
+    const player = document.getElementById("playerContainer");
+
+    player.innerHTML = "";
+    songContainer.innerHTML = "";
+
+    if (!mood || !moodToSongs[mood]) {
+      songContainer.innerHTML = "<p>Please choose a valid mood.</p>";
+      return;
+    }
+
+    songContainer.innerHTML = "<p>Choose a song:</p>";
+
+    moodToSongs[mood].forEach(song => {
+  // Skip any song that has no title
+  if (!song.title) return;
+
+  const btn = document.createElement("button");
+  btn.textContent = song.title;
+
+  // Only bind onclick if the song has a videoId
+  if (song.videoId) {
+    btn.onclick = () => playSong(song.videoId);
+  } else {
+    btn.disabled = true; // Disable button if no video
+    btn.title = "Video unavailable";
+  }
+
+  songContainer.appendChild(btn);
+});
+
+  }
+
+  function playSong(videoId) {
+    const player = document.getElementById("playerContainer");
+    player.innerHTML = `
+      <iframe width="100%" height="100%"
+        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen>
+      </iframe>
+    `;
+  }
+</script>
+
+</body>
+</html>

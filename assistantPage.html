@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Custom Page - Audiora</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow: hidden; /* prevent scrollbars from notes */
+      position: relative;
+    }
+
+    /* Floating musical notes */
+    .note {
+      position: absolute;
+      font-size: 24px;
+      animation: float 6s linear infinite;
+      pointer-events: none;
+      color: white;
+      opacity: 0.6;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Welcome to Audiora's Chatbot!</h2>
+  <p>Let us know how you're feeling, and we’ll curate the perfect playlist for you!</p>
+
+  <!-- Instruction -->
+<p>For a better experience! Click the button below!</p>
+
+<!-- Clickable button -->
+<a href="dora.html">
+  <button style="
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #8797FF;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  " onmouseover="this.style.backgroundColor='#6C73A8'"
+     onmouseout="this.style.backgroundColor='#8797FF'">
+    Go to Dora
+  </button>
+</a>
+
+  <!-- Floating musical notes -->
+  <div class="note" style="left: 10%;">🎵</div>
+  <div class="note" style="left: 25%;">🎶</div>
+  <div class="note" style="left: 40%;">🎵</div>
+  <div class="note" style="left: 55%;">🎶</div>
+  <div class="note" style="left: 70%;">🎵</div>
+  <div class="note" style="left: 85%;">🎶</div>
+
+  <!-- Jotform Script for Chatbot -->
+  <script src="https://cdn.jotfor.ms/s/umd/latest/for-embedded-agent.js"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      window.AgentInitializer.init({
+        rootId: "JotformAgent-0196af6f5efe7e7eb1769d0addf0a0e712e8",
+        formID: "0196af6f5efe7e7eb1769d0addf0a0e712e8",
+        queryParams: ["skipWelcome=1", "maximizable=1"],
+        domain: "https:\/\/www.jotform.com",
+        isInitialOpen: false,
+        isDraggable: false,
+        background: "linear-gradient(180deg, #6C73A8 0%, #6C73A8 100%)",
+        buttonBackgroundColor: "#0066C3",
+        buttonIconColor: "#FFFFFF",
+        variant: false,
+        customizations: {
+          greeting: "Yes",
+          greetingMessage: "Hey hello! What's your mood today?",
+          pulse: "Yes",
+          position: "right"
+        }
+      });
+    });
+
+    // Optional: Randomize animation duration and position
+    document.querySelectorAll('.note').forEach(note => {
+      const randomDuration = 4 + Math.random() * 4;
+      const randomDelay = Math.random() * 5;
+      note.style.animationDuration = `${randomDuration}s`;
+      note.style.animationDelay = `${randomDelay}s`;
+    });
+
+    // Redirect function
+    function goToDora() {
+      window.location.href = "dora.html"; // change to your chatbot page file
+    }
+
+  </script>
+</body>
+</html>
